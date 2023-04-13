@@ -4,12 +4,22 @@
   "description": "be of redred project (like redit)",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/server.js"
   },
   "keywords": [
     "be",
     "redred"
   ],
   "author": "duy nguyen",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "16.0.3",
+    "ejs": "3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
 }
