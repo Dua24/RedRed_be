@@ -4,13 +4,21 @@ const path = require('path')
 const configViewEngine = require('./config/viewEngine')
 const connection = require('./config/db')
 const routerApi = require('./routes/api')
+const fileUpload = require('express-fileupload');
 const app = express()
 const port = process.env.PORT || 8888
 const hostname = process.env.HOST_NAME
 
+
 // config req.body
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// config upload file
+app.use(fileUpload());
+
+//config firebase
+
 
 // config engine
 configViewEngine(app)
