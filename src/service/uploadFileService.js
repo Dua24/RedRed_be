@@ -1,10 +1,10 @@
 const admin = require("../config/fileUpload")
-const uploadSingleFile = async (file) => {
+const uploadSingleFile = async (file, folder) => {
     try {
         // Upload the file to Firebase storage
         const bucket = admin.storage().bucket();
         const fileName = `${Date.now()}-${file.name}`;
-        const fileRef = bucket.file(`posts/${fileName}`);
+        const fileRef = bucket.file(`${folder}/${fileName}`);
         const stream = fileRef.createWriteStream({
             metadata: { contentType: file.mimetype },
             resumable: false
@@ -29,10 +29,10 @@ const uploadSingleFile = async (file) => {
     }
 }
 
-const getFileUploaded = async (file) => {
+const getFileUploaded = async (file, folder) => {
     try {
         const bucket = admin.storage().bucket();
-        const fileRef = bucket.file(`posts/${file}`);
+        const fileRef = bucket.file(`${folder}/${file}`);
         const fileData = await fileRef.download();
         // Convert the buffer to a data URL
         const dataUrl = 'data:image/jpeg;base64,' + fileData[0].toString('base64');

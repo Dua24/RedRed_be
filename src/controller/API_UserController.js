@@ -5,37 +5,36 @@ const { getFileUploaded, uploadSingleFile } = require("../service/uploadFileServ
 const getAllUsers = async (req, res) => {
     const result = await User.find({});
     for (const e of result) {
-        const imgBase64 = await getFileUploaded(e.image)
+        const imgBase64 = await getFileUploaded(e.image, 'users')
         e.image = imgBase64
     }
     res.status(200).json({
-        errorCode: 0,
-        result,
+        EC: 0,
+        DT: result
     })
 }
 
 const postUser = async (req, res) => {
-    const file = req.files.image;
-    if (!file) {
-        return res.status(400).send('No file uploaded.');
+    let image
+    if (req.files.image) {
+        const file = req?.files?.image;
+        image = await uploadSingleFile(file, 'users')
     }
-
-    let image = await uploadSingleFile(file)
     const data = {
         ...req.body,
         image
     }
     const result = await User.create(data)
     res.status(200).json({
-        errorCode: 0,
-        result,
+        EC: 0,
+        DT: result
     })
 }
 const getAUser = async (req, res) => {
     const result = await User.findOne({ _id: req.params.id }).populate("posts");
     res.status(200).json({
-        errorCode: 0,
-        result,
+        EC: 0,
+        DT: result
     })
 }
 
@@ -43,8 +42,8 @@ const updateAUser = async (req, res) => {
 
     const result = await User.updateOne({ _id: req.params.id }, { ...req.body })
     res.status(200).json({
-        errorCode: 0,
-        result,
+        EC: 0,
+        DT: result
     })
 }
 
