@@ -15,8 +15,9 @@ const hostname = process.env.HOST_NAME
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// config upload file
+// config req.files
 app.use(fileUpload());
+
 
 const corsOptions = {
     origin: 'http://localhost:3000',

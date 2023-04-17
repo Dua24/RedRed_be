@@ -1,13 +1,9 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { getFileUploaded, uploadSingleFile } = require("../service/uploadFileService");
+const { getFileUploaded, uploadSingleFile, convertFile2Base64 } = require("../service/uploadFileService");
 
 const getAllUsers = async (req, res) => {
     const result = await User.find({});
-    for (const e of result) {
-        const imgBase64 = await getFileUploaded(e.image, 'users')
-        e.image = imgBase64
-    }
     res.status(200).json({
         EC: 0,
         DT: result
@@ -15,14 +11,15 @@ const getAllUsers = async (req, res) => {
 }
 
 const postUser = async (req, res) => {
-    let image
+    let imgBase64
     if (req.files.image) {
-        const file = req?.files?.image;
-        image = await uploadSingleFile(file, 'users')
+        imgBase64 = convertFile2Base64(req.files.image)
+    } else {
+        return res.send("no File uploaded")
     }
     const data = {
         ...req.body,
-        image
+        image: imgBase64
     }
     const result = await User.create(data)
     res.status(200).json({
