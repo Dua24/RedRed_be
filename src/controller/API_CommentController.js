@@ -1,5 +1,6 @@
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
+const Reply = require("../models/Reply");
 const User = require("../models/User");
 
 const postComment = async (req, res) => {
@@ -30,4 +31,21 @@ const getAComment = async (req, res) => {
     })
 }
 
-module.exports = { postComment, getAComment }
+const deleteComment = async (req, res) => {
+    const result = await Comment.deleteOne({ _id: req.body.id })
+    await Post.updateMany({ comments: req.body.id }, { $pull: { comments: req.body.id } })
+    await User.updateMany({ comments: req.body.id }, { $pull: { comments: req.body.id } })
+    const r1 = await Reply.find({ comment: req.body.id })
+    await Reply.deleteOne({ comment: req.body.id })
+    r1.forEach(async (e) => {
+        await User.updateOne({ replies: e._id }, { $pull: { replies: e._id } })
+    })
+
+
+    return res.status(200).json({
+        EC: 0,
+        DT: result
+    })
+}
+
+module.exports = { postComment, getAComment, deleteComment }

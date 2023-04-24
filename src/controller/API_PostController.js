@@ -1,4 +1,7 @@
+const Comment = require("../models/Comment");
 const Post = require("../models/Post");
+const Rating = require("../models/Rating");
+const Reply = require("../models/Reply");
 const User = require("../models/User");
 const { convertFile2Base64 } = require("../service/uploadFileService");
 const postPost = async (req, res) => {
@@ -37,6 +40,16 @@ const getAPost = async (req, res) => {
                     path: 'owner',
                 }
             }
+        ).populate(
+            {
+                path: "comments",
+                populate: {
+                    path: 'replies',
+                    populate: {
+                        path: 'owner',
+                    }
+                }
+            }
         );
     return res.status(200).json({
         EC: 0,
@@ -50,6 +63,37 @@ const updateAPost = async (req, res) => {
         DT: result
     })
 }
+
+const getPostsByUser = async (req, res) => {
+    const result = await Post.find({ owner: req.params.userId }).populate('owner')
+    return res.status(200).json({
+        EC: 0,
+        DT: result
+    })
+}
+
+const deletePost = async (req, res) => {
+    const result = await Post.deleteOne({ _id: req.body.id })
+    await User.updateMany({ posts: req.body.id }, { $pull: { posts: req.body.id } })
+    await Rating.deleteMany({ post: req.body.id })
+    const r1 = await Comment.find({ post: req.body.id })
+    await Comment.deleteMany({ post: req.body.id })
+    r1.forEach(async (e) => {
+        await User.updateOne({ comments: e._id }, { $pull: { comments: e._id } })
+        e.replies.forEach(async (r) => {
+            await Reply.deleteOne({ _id: r })
+            await User.updateOne({ replies: r }, { $pull: { replies: r } })
+
+        })
+    })
+
+    return res.status(200).json({
+        EC: 0,
+        DT: result
+    })
+}
+
+
 // const postFile = async (req, res) => {
 //     const file = req.files.file;
 //     if (!file) {
@@ -68,4 +112,4 @@ const updateAPost = async (req, res) => {
 //     return res.json({ result })
 // }
 
-module.exports = { getAllPosts, postPost, getAPost, updateAPost }
+module.exports = { getAllPosts, postPost, getAPost, updateAPost, getPostsByUser, deletePost }

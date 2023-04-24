@@ -9,9 +9,17 @@ const postAReply = async (req, res) => {
     await Comment.updateOne({ _id: req.body.comment }, { $push: { replies: result._id } })
     res.status(200).json({
         EC: 0,
-        DT:result
+        DT: result
     })
 }
 
-
-module.exports = { postAReply }
+const deleteReply = async (req, res) => {
+    const result = await Reply.deleteOne({ _id: req.body.id })
+    await Comment.updateMany({ replies: req.body.id }, { $pull: { replies: req.body.id } })
+    await User.updateMany({ replies: req.body.id }, { $pull: { replies: req.body.id } })
+    return res.status(200).json({
+        EC: 0,
+        DT: result
+    })
+}
+module.exports = { postAReply, deleteReply }

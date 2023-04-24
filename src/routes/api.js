@@ -1,27 +1,48 @@
 const express = require('express')
 const { getAllUsers, postUser, getAUser, updateAUser } = require('../controller/API_UserController')
-const { getAllPosts, postPost, getAPost, updateAPost } = require('../controller/API_PostController')
-const { postComment, getAComment } = require('../controller/API_CommentController')
-const { postAReply } = require('../controller/API_ReplyController')
+const { getAllPosts, postPost, getAPost, updateAPost, getPostsByUser, deletePost } = require('../controller/API_PostController')
+const { postComment, getAComment, deleteComment } = require('../controller/API_CommentController')
+const { postAReply, deleteReply } = require('../controller/API_ReplyController')
+const { register, login, checkEmailExist, logout } = require('../controller/API_AuthController')
+const { rateAPost, getAllRateOfUser } = require('../controller/API_RatingController')
 const routerApi = express.Router()
 
 // user
-routerApi.get('/user', getAllUsers)
+routerApi.get('/users', getAllUsers)
 routerApi.post('/user', postUser)
 routerApi.get('/user/:id', getAUser)
-routerApi.put('/user/:id', updateAUser)
+routerApi.put('/user', updateAUser)
 
 // post
-routerApi.get('/post', getAllPosts)
-routerApi.post('/post', postPost)
+routerApi.get('/posts', getAllPosts)
+routerApi.get('/posts/:userId', getPostsByUser)
 routerApi.get('/post/:id', getAPost)
+routerApi.post('/post', postPost)
 routerApi.put('/post/:id', updateAPost)
+routerApi.delete('/post', deletePost)
+
 
 //comment
 routerApi.get('/comment/:id', getAComment)
 routerApi.post('/comment', postComment)
+routerApi.delete('/comment', deleteComment)
+
 
 //reply
 routerApi.post('/reply', postAReply)
+routerApi.delete('/reply', deleteReply)
+
+
+// Auth
+routerApi.post('/register', register)
+routerApi.post('/login', login)
+routerApi.post('/email', checkEmailExist)
+routerApi.post('/logout', logout)
+
+// Rating
+routerApi.post('/rate', rateAPost)
+routerApi.post('/rates', getAllRateOfUser)
+
+
 
 module.exports = routerApi

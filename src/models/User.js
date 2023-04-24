@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema(
     {
+        email: String,
         name: String,
         image: String,
         posts: [
@@ -20,9 +21,10 @@ const userSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Reply"
             }
-        ]
+        ],
+        Online: { type: Boolean, default: false }
     },
-    { timeStamps: true }
+    { timestamps: true }
 );
 
 const User = mongoose.model('User', userSchema);

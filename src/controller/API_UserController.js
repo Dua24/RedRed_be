@@ -1,3 +1,4 @@
+const Account = require("../models/Account");
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { getFileUploaded, uploadSingleFile, convertFile2Base64 } = require("../service/uploadFileService");
@@ -36,8 +37,12 @@ const getAUser = async (req, res) => {
 }
 
 const updateAUser = async (req, res) => {
-
-    const result = await User.updateOne({ _id: req.params.id }, { ...req.body })
+    const data = {
+        ...req.body,
+        image: convertFile2Base64(req.files.image)
+    }
+    const result = await User.updateOne({ _id: req.body.id }, data)
+    await Account.updateOne({ _id: req.body.id }, { username: req.body.name, image: data.image })
     res.status(200).json({
         EC: 0,
         DT: result
