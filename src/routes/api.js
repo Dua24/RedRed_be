@@ -3,7 +3,7 @@ const { getAllUsers, postUser, getAUser, updateAUser } = require('../controller/
 const { getAllPosts, postPost, getAPost, updateAPost, getPostsByUser, deletePost } = require('../controller/API_PostController')
 const { postComment, getAComment, deleteComment } = require('../controller/API_CommentController')
 const { postAReply, deleteReply } = require('../controller/API_ReplyController')
-const { register, login, checkEmailExist, logout } = require('../controller/API_AuthController')
+const { register, login, checkEmailExist, logout, checkUsernameExist } = require('../controller/API_AuthController')
 const { rateAPost, getAllRateOfUser } = require('../controller/API_RatingController')
 const routerApi = express.Router()
 
@@ -37,6 +37,7 @@ routerApi.delete('/reply', deleteReply)
 routerApi.post('/register', register)
 routerApi.post('/login', login)
 routerApi.post('/email', checkEmailExist)
+routerApi.post('/username', checkUsernameExist)
 routerApi.post('/logout', logout)
 
 // Rating

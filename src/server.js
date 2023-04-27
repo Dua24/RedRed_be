@@ -6,6 +6,8 @@ const connection = require('./config/db')
 const routerApi = require('./routes/api')
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+const http = require('http');
+const { Server } = require('socket.io')
 const app = express()
 const port = process.env.PORT || 8888
 const hostname = process.env.HOST_NAME
@@ -17,27 +19,40 @@ app.use(express.urlencoded({ extended: true }))
 
 // config req.files
 app.use(fileUpload());
+app.use(cors());
 
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+})
 
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,            //access-control-allow-credentials:true
     optionSuccessStatus: 200
 }
-app.use(cors(corsOptions));
 
+
+io.on("connection", (socket) => {
+    socket.on('chat', (data) => {
+        console.log(data)
+        socket.broadcast.emit("user_chat", data)
+    })
+})
 
 // config engine
 configViewEngine(app)
 
 app.use('/v1/api/', routerApi);
 
-
 ; (async () => {
     // connect database
     try {
         await connection()
-        app.listen(port, hostname, () => {
+        server.listen(port, hostname, () => {
             console.log(`App listening on port ${port}`)
         })
     } catch (error) {

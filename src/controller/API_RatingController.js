@@ -13,9 +13,9 @@ const rateAPost = async (req, res) => {
             const post = await Post.findOne({ _id: req.body.post })
             await Rating.updateOne({ _id: result._id }, { type: req.body.type })
             if (req.body.type === 'like') {
-                await Post.updateOne({ _id: post._id }, { num_Evaluate: post.num_Evaluate + 1 })
+                await Post.updateOne({ _id: post._id }, { num_Evaluate: post.num_Evaluate + 2 })
             } else {
-                await Post.updateOne({ _id: post._id }, { num_Evaluate: post.num_Evaluate - 1 })
+                await Post.updateOne({ _id: post._id }, { num_Evaluate: post.num_Evaluate - 2 })
             }
             return res.status(200).json({
                 EC: 0,

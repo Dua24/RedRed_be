@@ -24,14 +24,14 @@ const register = async (req, res) => {
         const data = {
             ...req.body,
             password: req.body.password,
-            image: ''
+            image: 'https://external-preview.redd.it/5kh5OreeLd85QsqYO1Xz_4XSLYwZntfjqou-8fyBFoE.png?auto=webp&s=dbdabd04c399ce9c761ff899f5d38656d1de87c2'
         }
         result = await Account.create(data)
         await User.create({
             _id: result._id,
             email: req.body.email,
             name: req.body.username,
-            image: '',
+            image: 'https://external-preview.redd.it/5kh5OreeLd85QsqYO1Xz_4XSLYwZntfjqou-8fyBFoE.png?auto=webp&s=dbdabd04c399ce9c761ff899f5d38656d1de87c2',
             posts: [],
             comments: [],
             replies: [],
@@ -60,6 +60,24 @@ const checkEmailExist = async (req, res) => {
         })
     }
 }
+
+const checkUsernameExist = async (req, res) => {
+    let result
+    result = await Account.findOne({ username: req.body.username })
+    if (result) {
+        return res.status(200).json({
+            EC: 1,
+            DT: "Username is already exist"
+        })
+    } else {
+        return res.status(200).json({
+            EC: 0,
+            DT: "Username is valid"
+        })
+    }
+}
+
+
 
 const login = async (req, res) => {
     const result = await Account.findOne({ email: req.body.email })
@@ -101,4 +119,4 @@ const logout = async (req, res) => {
     }
 }
 
-module.exports = { register, login, checkEmailExist, logout }
+module.exports = { register, login, checkEmailExist, logout, checkUsernameExist }
