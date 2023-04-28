@@ -37,9 +37,12 @@ const corsOptions = {
 
 
 io.on("connection", (socket) => {
+    socket.on('room', (data) => {
+        socket.join(data)
+    })
     socket.on('chat', (data) => {
         console.log(data)
-        socket.broadcast.emit("user_chat", data)
+        socket.to(data.room).emit("user_chat", data)
     })
 })
 
