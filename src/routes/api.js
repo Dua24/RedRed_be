@@ -5,7 +5,7 @@ const { postComment, getAComment, deleteComment } = require('../controller/API_C
 const { postAReply, deleteReply } = require('../controller/API_ReplyController')
 const { register, login, checkEmailExist, logout, checkUsernameExist } = require('../controller/API_AuthController')
 const { rateAPost, getAllRateOfUser } = require('../controller/API_RatingController')
-const { createRoomChat } = require('../controller/API_ChatController')
+const { createRoomChat, postMessage, getAllMsgOfRoom } = require('../controller/API_ChatController')
 const routerApi = express.Router()
 
 // user
@@ -47,6 +47,11 @@ routerApi.post('/rates', getAllRateOfUser)
 
 // Chat
 routerApi.post('/room', createRoomChat)
+
+// Message
+routerApi.post('/message', postMessage)
+routerApi.get('/message/:room', getAllMsgOfRoom)
+
 
 
 
