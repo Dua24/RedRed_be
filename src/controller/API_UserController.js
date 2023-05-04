@@ -38,18 +38,10 @@ const getAUser = async (req, res) => {
 
 const updateAUser = async (req, res) => {
     let data = {}
-    if (req.files) {
-        data = {
-            ...req.body,
-            image: convertFile2Base64(req.files.image)
-        }
-    } else {
-        data = {
-            ...req.body,
-            image: 'https://external-preview.redd.it/5kh5OreeLd85QsqYO1Xz_4XSLYwZntfjqou-8fyBFoE.png?auto=webp&s=dbdabd04c399ce9c761ff899f5d38656d1de87c2'
-        }
+    data = {
+        ...req.body,
+        image: req.body.image || convertFile2Base64(req.files.image)
     }
-
     const result = await User.updateOne({ _id: req.body.id }, data)
     await Account.updateOne({ _id: req.body.id }, { username: req.body.name, image: data.image })
     res.status(200).json({
