@@ -29,12 +29,23 @@ const io = new Server(server, {
         credentials: true
     }
 })
-app.use(cors({
-    origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app', // Allow requests from this origin
-    methods: ['GET', 'POST'], // Allow these HTTP methods
-    allowedHeaders: ['secretHeader'], // Allow these request headers
+// app.use(cors({
+//     origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app', // Allow requests from this origin
+//     methods: ['GET', 'POST'], // Allow these HTTP methods
+//     allowedHeaders: ['secretHeader'], // Allow these request headers
+//     credentials: true // Allow cookies to be sent cross-origin
+// }));
+
+
+app.options('*', cors({
+    allowedHeaders: ['Content-Type'],
+    methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS'],
+    origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app',
     credentials: true // Allow cookies to be sent cross-origin
 }));
+
+app.use(cors());
+
 
 io.on("connection", (socket) => {
     socket.on('room', (data) => {
