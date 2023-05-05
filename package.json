@@ -22,7 +22,6 @@
     "fs": "0.0.1-security",
     "md5": "2.3.0",
     "mongoose": "7.0.3",
-    "mongoose-delete": "^0.5.4",
     "socket.io": "4.6.1"
   },
   "devDependencies": {
