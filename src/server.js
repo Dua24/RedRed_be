@@ -23,14 +23,12 @@ app.use(fileUpload());
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "https://redred-lilac.vercel.app/",
-        // origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["secretHeader"],
+        origin: 'https://redred-lilac.vercel.app',
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['secretHeader'],
         credentials: true
     }
 })
-
 app.use(cors({
     origin: 'https://redred-lilac.vercel.app/', // Allow requests from this origin
     methods: ['GET', 'POST'], // Allow these HTTP methods
