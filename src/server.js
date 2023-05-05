@@ -55,6 +55,9 @@ app.use(helmet.contentSecurityPolicy({
 configViewEngine(app)
 
 app.use('/v1/api/', routerApi);
+app.use('/', (req, res) => {
+    res.send("Hi, welcome to redred")
+});
 
 ; (async () => {
     // connect database
