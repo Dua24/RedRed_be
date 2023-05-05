@@ -19,7 +19,6 @@ app.use(express.urlencoded({ extended: true }))
 
 // config req.files
 app.use(fileUpload());
-app.use(cors());
 
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -32,12 +31,12 @@ const io = new Server(server, {
     }
 })
 
-// const corsOptions = {
-//     origin: 'http://localhost:3000',
-//     credentials: true,            //access-control-allow-credentials:true
-//     optionSuccessStatus: 200
-// }
-
+app.use(cors({
+    origin: 'https://redred-lilac.vercel.app/', // Allow requests from this origin
+    methods: ['GET', 'POST'], // Allow these HTTP methods
+    allowedHeaders: ['secretHeader'], // Allow these request headers
+    credentials: true // Allow cookies to be sent cross-origin
+}));
 
 io.on("connection", (socket) => {
     socket.on('room', (data) => {
