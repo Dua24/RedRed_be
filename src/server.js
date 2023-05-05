@@ -11,7 +11,7 @@ const { Server } = require('socket.io')
 const app = express()
 const port = process.env.PORT || 8888
 const hostname = process.env.HOST_NAME
-
+const helmet = require('helmet');
 
 // config req.body
 app.use(express.json())
@@ -45,7 +45,12 @@ io.on("connection", (socket) => {
         socket.to(data.room).emit("user_chat", data)
     })
 })
-
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'none'"],
+        fontSrc: ["https://redred-be.onrender.com"]
+    }
+}));
 // config engine
 configViewEngine(app)
 
