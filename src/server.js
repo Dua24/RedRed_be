@@ -25,7 +25,9 @@ const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
         origin: "https://redred-five.vercel.app/",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST"],
+        allowedHeaders: ["secretHeader"],
+        credentials: true
     }
 })
 
