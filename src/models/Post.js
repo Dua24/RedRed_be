@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const mongoose_delete = require('mongoose-delete');
 const postSchema = new mongoose.Schema(
     {
         post_detail: String,
@@ -19,7 +18,6 @@ const postSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-postSchema.plugin(mongoose_delete);
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post
