@@ -69,7 +69,10 @@ app.use('/v1/api/', routerApi);
 app.use('/', (req, res) => {
     res.send("Hi, welcome to redred")
 });
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app');
+    next();
+});
 ; (async () => {
     // connect database
     try {
