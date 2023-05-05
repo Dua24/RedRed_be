@@ -24,16 +24,16 @@ app.use(cors());
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://redred-five.vercel.app/",
         methods: ["GET", "POST"]
     }
 })
 
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,            //access-control-allow-credentials:true
-    optionSuccessStatus: 200
-}
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     credentials: true,            //access-control-allow-credentials:true
+//     optionSuccessStatus: 200
+// }
 
 
 io.on("connection", (socket) => {
