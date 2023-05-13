@@ -23,14 +23,14 @@ app.use(fileUpload());
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app',
+        origin: 'http://localhost:3000',
         methods: ['GET', 'POST'],
         allowedHeaders: ['secretHeader'],
         credentials: true
     }
 })
 // app.use(cors({
-//     origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app', // Allow requests from this origin
+//     origin: 'http://localhost:3000', // Allow requests from this origin
 //     methods: ['GET', 'POST'], // Allow these HTTP methods
 //     allowedHeaders: ['secretHeader'], // Allow these request headers
 //     credentials: true // Allow cookies to be sent cross-origin
@@ -40,7 +40,7 @@ const io = new Server(server, {
 app.options('*', cors({
     allowedHeaders: ['Content-Type'],
     methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS'],
-    origin: 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app',
+    origin: 'http://localhost:3000',
     credentials: true // Allow cookies to be sent cross-origin
 }));
 
