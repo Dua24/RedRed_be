@@ -9,10 +9,9 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io')
 const app = express()
-const port = process.env.PORT || 8888
+const port = process.env.PORT || 8081
 const hostname = process.env.HOST_NAME
 const helmet = require('helmet');
-const fs = require('fs')
 
 // config req.body
 app.use(express.json())
@@ -67,13 +66,10 @@ io.on("connection", (socket) => {
 configViewEngine(app)
 
 app.use('/v1/api/', routerApi);
-// app.use('/', (req, res) => {
-//     res.send("Hi, welcome to redred")
-// });
-const filePath = path.join(__dirname, '../', '52B86CB3AC9E5D4FD51277711F202091.txt');
-app.get('/.well-known/pki-validation/52B86CB3AC9E5D4FD51277711F202091.txt', (req, res) => {
-    res.sendFile(filePath)
+app.use('/', (req, res) => {
+    res.send("Hi, welcome to redred")
 });
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://red-red-pe2sfh0la-nguynnguynduy-gmailcom.vercel.app');
     next();
